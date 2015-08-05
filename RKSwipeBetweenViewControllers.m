@@ -163,7 +163,10 @@ CGFloat NAVIGATION_VIEW_Y = 60;
 //generally, this shouldn't be changed unless you know what you're changing
 #pragma mark Setup
 
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
     if (!self.hasAppearedFlag) {
         [self setupPageViewController];
         [self setupSegmentButtons];
