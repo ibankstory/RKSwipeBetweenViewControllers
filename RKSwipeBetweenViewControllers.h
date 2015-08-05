@@ -148,7 +148,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "ScrollableNavigationView.h"
+
 @protocol RKSwipeBetweenViewControllersDelegate <NSObject>
 
 @end
@@ -159,7 +159,7 @@
 @property (nonatomic, weak) id<RKSwipeBetweenViewControllersDelegate> navDelegate;
 @property (nonatomic, strong) UIView *selectionBar;
 @property (nonatomic, strong) UIPageViewController *pageController;
-@property (nonatomic, strong) ScrollableNavigationView *navigationView;
+@property (nonatomic, strong) UIScrollView *navigationView;
 @property (nonatomic, strong) NSArray *buttonText;
 @property (nonatomic, strong) UIColor *selectedButtonColor;
 @property (nonatomic, strong) UIColor *normalButtonColor;

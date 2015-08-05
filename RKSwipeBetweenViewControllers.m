@@ -70,7 +70,7 @@ CGFloat NAVIGATION_VIEW_Y = 60;
 //%%% sets up the tabs using a loop.  You can take apart the loop to customize individual buttons, but remember to tag the buttons.  (button.tag=0 and the second button.tag=1, etc)
 -(void)setupSegmentButtons {
     
-    navigationView = [[ScrollableNavigationView alloc]initWithFrame:CGRectMake(0,NAVIGATION_VIEW_Y,self.view.frame.size.width,44)];
+    navigationView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,NAVIGATION_VIEW_Y,self.view.frame.size.width,44)];
     
     if(!self.navigationViewBackgroundColor){
         self.navigationViewBackgroundColor = [UIColor clearColor];
