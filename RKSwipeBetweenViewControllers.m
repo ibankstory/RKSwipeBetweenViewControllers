@@ -249,7 +249,6 @@ CGFloat NAVIGATION_VIEW_Y = 60;
 }
 
 - (void)updateSelectedButton:(NSInteger)index{
-    NSLog(@"updateSelectedButton");
     
     for (id subview in navigationView.subviews) {
         
@@ -257,7 +256,6 @@ CGFloat NAVIGATION_VIEW_Y = 60;
             
             UIButton *button = (UIButton *)subview;
             if (button.tag == index) {
-                NSLog(@"x");
                 [button setTitleColor:self.selectedButtonColor forState:UIControlStateNormal];
             }else{
                 [button setTitleColor:self.normalButtonColor forState:UIControlStateNormal];
