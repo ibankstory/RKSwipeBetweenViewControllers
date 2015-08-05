@@ -71,11 +71,12 @@ CGFloat NAVIGATION_VIEW_Y = 60;
 -(void)setupSegmentButtons {
     
     navigationView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,NAVIGATION_VIEW_Y,self.view.frame.size.width,44)];
-    
+    navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     if(!self.navigationViewBackgroundColor){
-        self.navigationViewBackgroundColor = [UIColor clearColor];
+        self.navigationViewBackgroundColor = [UIColor blueColor];
     }
-
+    navigationView.backgroundColor = self.navigationViewBackgroundColor;
+    
     NSInteger numControllers = [viewControllerArray count];
     
     if (!buttonText) {
@@ -112,7 +113,6 @@ CGFloat NAVIGATION_VIEW_Y = 60;
     navigationView.showsHorizontalScrollIndicator = NO;
     navigationView.scrollEnabled = NO;
     [self.view addSubview:navigationView];
-
 
     
     //%%% example custom buttons example:
@@ -158,7 +158,9 @@ CGFloat NAVIGATION_VIEW_Y = 60;
     [self.view addSubview:selectionBar];
     
 }
-
+- (void)updateSelectionBarFrame{
+    selectionBar.frame = CGRectMake((navigationView.frame.size.width/2) - (BUTTON_WIDTH/2) ,NAVIGATION_VIEW_Y + self.navigationView.frame.size.height-SELECTOR_HEIGHT-2,BUTTON_WIDTH, SELECTOR_HEIGHT);
+}
 
 //generally, this shouldn't be changed unless you know what you're changing
 #pragma mark Setup
@@ -171,7 +173,13 @@ CGFloat NAVIGATION_VIEW_Y = 60;
         [self setupPageViewController];
         [self setupSegmentButtons];
         self.hasAppearedFlag = YES;
+        [self updateNavigationViewOffset:self.pageScrollView];
     }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [self updateSelectionBarFrame];
 }
 
 //%%% generic setup stuff for a pageview controller.  Sets up the scrolling style and delegate for the controller
@@ -272,6 +280,10 @@ CGFloat NAVIGATION_VIEW_Y = 60;
 //%%% method is called when any of the pages moves.
 //It extracts the xcoordinate from the center point and instructs the selection bar to move accordingly
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self updateNavigationViewOffset:scrollView];
+}
+
+- (void)updateNavigationViewOffset:(UIScrollView *)scrollView {
     
     CGFloat view_width = navigationView.frame.size.width;
     
@@ -356,5 +368,7 @@ CGFloat NAVIGATION_VIEW_Y = 60;
     
     selectionBar.alpha = 1.0;
 }
+
+
 
 @end
