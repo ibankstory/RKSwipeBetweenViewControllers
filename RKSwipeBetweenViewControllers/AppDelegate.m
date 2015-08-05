@@ -26,11 +26,14 @@
     UIViewController *demo2 = [[UIViewController alloc]init];
     UIViewController *demo3 = [[UIViewController alloc]init];
     UIViewController *demo4 = [[UIViewController alloc]init];
+    UIViewController *demo5 = [[UIViewController alloc]init];
+    UIViewController *demo6 = [[UIViewController alloc]init];
+    UIViewController *demo7 = [[UIViewController alloc]init];
     demo.view.backgroundColor = [UIColor redColor];
-    demo2.view.backgroundColor = [UIColor whiteColor];
+    demo2.view.backgroundColor = [UIColor blueColor];
     demo3.view.backgroundColor = [UIColor grayColor];
     demo4.view.backgroundColor = [UIColor orangeColor];
-    [navigationController.viewControllerArray addObjectsFromArray:@[demo,demo2,demo3,demo4]];
+    [navigationController.viewControllerArray addObjectsFromArray:@[demo,demo2,demo3,demo4,demo5,demo6,demo7]];
     
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];

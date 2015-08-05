@@ -10,8 +10,8 @@
 #import "RKSwipeBetweenViewControllers.h"
 
 //%%% customizeable button attributes
-CGFloat X_BUFFER = 0.0; //%%% the number of pixels on either side of the segment
-CGFloat Y_BUFFER = 14.0; //%%% number of pixels on top of the segment
+CGFloat X_BUFFER = 2.0; //%%% the number of pixels on either side of the segment
+CGFloat Y_BUFFER = 8.0; //%%% number of pixels on top of the segment
 CGFloat HEIGHT = 30.0; //%%% height of the segment
 
 //%%% customizeable selector bar attributes (the black bar under the buttons)
@@ -22,6 +22,8 @@ CGFloat SELECTOR_HEIGHT = 4.0; //%%% thickness of the selector bar
 
 CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy offset.  I'm going to look for a better workaround in the future
 
+CGFloat BUTTON_WIDTH = 80.0;
+CGFloat NAVIGATION_VIEW_Y = 60;
 @interface RKSwipeBetweenViewControllers ()
 
 @property (nonatomic) UIScrollView *pageScrollView;
@@ -51,8 +53,6 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
 {
     [super viewDidLoad];
 
-    self.navigationBar.barTintColor = [UIColor colorWithRed:0.01 green:0.05 blue:0.06 alpha:1]; //%%% bartint
-    self.navigationBar.translucent = NO;
     viewControllerArray = [[NSMutableArray alloc]init];
     self.currentPageIndex = 0;
     self.isPageScrollingFlag = NO;
@@ -69,27 +69,51 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
 
 //%%% sets up the tabs using a loop.  You can take apart the loop to customize individual buttons, but remember to tag the buttons.  (button.tag=0 and the second button.tag=1, etc)
 -(void)setupSegmentButtons {
-    navigationView = [[UIView alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,self.navigationBar.frame.size.height)];
     
+    navigationView = [[ScrollableNavigationView alloc]initWithFrame:CGRectMake(0,NAVIGATION_VIEW_Y,self.view.frame.size.width,44)];
+    
+    if(!self.navigationViewBackgroundColor){
+        self.navigationViewBackgroundColor = [UIColor clearColor];
+    }
+
     NSInteger numControllers = [viewControllerArray count];
     
     if (!buttonText) {
-         buttonText = [[NSArray alloc]initWithObjects: @"first",@"second",@"third",@"fourth",@"etc",@"etc",@"etc",@"etc",nil]; //%%%buttontitle
+         buttonText = [[NSArray alloc]initWithObjects: @"X",@"X",@"X",@"X",@"X",@"X",@"X",@"X",nil]; //%%%buttontitle
+    }
+    
+    if (!self.selectedButtonColor) {
+        self.selectedButtonColor = [UIColor colorWithWhite:1 alpha:1];
+    }
+    
+    if (!self.normalButtonColor) {
+        self.normalButtonColor = [UIColor colorWithWhite:1 alpha:0.7];
     }
     
     for (int i = 0; i<numControllers; i++) {
-        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(X_BUFFER+i*(self.view.frame.size.width-2*X_BUFFER)/numControllers-X_OFFSET, Y_BUFFER, (self.view.frame.size.width-2*X_BUFFER)/numControllers, HEIGHT)];
+        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake((BUTTON_WIDTH*i), Y_BUFFER, BUTTON_WIDTH, HEIGHT)];
+        
         [navigationView addSubview:button];
         
         button.tag = i; //%%% IMPORTANT: if you make your own custom buttons, you have to tag them appropriately
-        button.backgroundColor = [UIColor colorWithRed:0.03 green:0.07 blue:0.08 alpha:1];//%%% buttoncolors
         
         [button addTarget:self action:@selector(tapSegmentButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
         [button setTitle:[buttonText objectAtIndex:i] forState:UIControlStateNormal]; //%%%buttontitle
+        
+        if (i == 0) {
+            [button setTitleColor:self.selectedButtonColor forState:UIControlStateNormal];
+        }else{
+            [button setTitleColor:self.normalButtonColor forState:UIControlStateNormal];
+        }
     }
     
-    pageController.navigationController.navigationBar.topItem.titleView = navigationView;
+    navigationView.contentSize = CGSizeMake(numControllers*BUTTON_WIDTH, navigationView.frame.size.height);
+    navigationView.showsHorizontalScrollIndicator = NO;
+    navigationView.scrollEnabled = NO;
+    [self.view addSubview:navigationView];
+
+
     
     //%%% example custom buttons example:
     /*
@@ -125,10 +149,14 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
 
 //%%% sets up the selection bar under the buttons on the navigation bar
 -(void)setupSelector {
-    selectionBar = [[UIView alloc]initWithFrame:CGRectMake(X_BUFFER-X_OFFSET, SELECTOR_Y_BUFFER,(self.view.frame.size.width-2*X_BUFFER)/[viewControllerArray count], SELECTOR_HEIGHT)];
-    selectionBar.backgroundColor = [UIColor greenColor]; //%%% sbcolor
-    selectionBar.alpha = 0.8; //%%% sbalpha
-    [navigationView addSubview:selectionBar];
+    selectionBar = [[UIView alloc]initWithFrame:CGRectMake( (navigationView.frame.size.width/2) - (BUTTON_WIDTH/2) ,NAVIGATION_VIEW_Y + self.navigationView.frame.size.height-SELECTOR_HEIGHT-2,BUTTON_WIDTH, SELECTOR_HEIGHT)];
+    if (!self.selectionBarColor) {
+        self.selectionBarColor = [UIColor whiteColor];
+    }
+    selectionBar.backgroundColor = self.selectionBarColor; //%%% sbcolor
+    selectionBar.alpha = 1.0; //%%% sbalpha
+    [self.view addSubview:selectionBar];
+    
 }
 
 
@@ -173,6 +201,8 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
 //so there's a loop that shows every view controller in the array up to the one you selected
 //eg: if you're on page 1 and you click tab 3, then it shows you page 2 and then page 3
 -(void)tapSegmentButtonAction:(UIButton *)button {
+
+    [self updateSelectedButton:button.tag];
     
     if (!self.isPageScrollingFlag) {
         
@@ -191,6 +221,7 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
                     //then it updates the page that it's currently on
                     if (complete) {
                         [weakSelf updateCurrentPageIndex:i];
+
                     }
                 }];
             }
@@ -207,6 +238,8 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
             }
         }
     }
+    
+    
 }
 
 //%%% makes sure the nav bar is always aware of what page you're on
@@ -215,17 +248,53 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
     self.currentPageIndex = newIndex;
 }
 
+- (void)updateSelectedButton:(NSInteger)index{
+    NSLog(@"updateSelectedButton");
+    
+    for (id subview in navigationView.subviews) {
+        
+        if ([subview isKindOfClass:[UIButton class]]) {
+            
+            UIButton *button = (UIButton *)subview;
+            if (button.tag == index) {
+                NSLog(@"x");
+                [button setTitleColor:self.selectedButtonColor forState:UIControlStateNormal];
+            }else{
+                [button setTitleColor:self.normalButtonColor forState:UIControlStateNormal];
+            }
+        }
+        
+        
+    }
+}
+
 //%%% method is called when any of the pages moves.
 //It extracts the xcoordinate from the center point and instructs the selection bar to move accordingly
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat xFromCenter = self.view.frame.size.width-scrollView.contentOffset.x; //%%% positive for right swipe, negative for left
     
-    //%%% checks to see what page you are on and adjusts the xCoor accordingly.
-    //i.e. if you're on the second page, it makes sure that the bar starts from the frame.origin.x of the
-    //second tab instead of the beginning
-    NSInteger xCoor = X_BUFFER+selectionBar.frame.size.width*self.currentPageIndex-X_OFFSET;
+    CGFloat view_width = navigationView.frame.size.width;
     
-    selectionBar.frame = CGRectMake(xCoor-xFromCenter/[viewControllerArray count], selectionBar.frame.origin.y, selectionBar.frame.size.width, selectionBar.frame.size.height);
+    CGFloat center = ((view_width - scrollView.contentOffset.x)*2) / [viewControllerArray count];
+
+    NSInteger xCoor = self.currentPageIndex * BUTTON_WIDTH - (navigationView.frame.size.width/2 - BUTTON_WIDTH/2);
+    
+    NSInteger current_xCoor = (xCoor - center);
+    
+    NSInteger next_xCoor = xCoor + BUTTON_WIDTH;
+    
+    NSInteger previous_xCoor = next_xCoor - BUTTON_WIDTH*2;
+    
+    
+    if (current_xCoor > next_xCoor) {
+        current_xCoor = next_xCoor;
+    }
+    
+    if (current_xCoor < previous_xCoor) {
+        current_xCoor = previous_xCoor;
+    }
+    
+    navigationView.contentOffset = CGPointMake(current_xCoor, 0);
+    
 }
 
 
@@ -275,10 +344,16 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     self.isPageScrollingFlag = YES;
+    
+    selectionBar.alpha = 0.6;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     self.isPageScrollingFlag = NO;
+    
+    [self updateSelectedButton:self.currentPageIndex];
+    
+    selectionBar.alpha = 1.0;
 }
 
 @end

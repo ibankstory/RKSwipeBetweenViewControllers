@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C38482E1B71F8F000E01146 /* ScrollableNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C38482D1B71F8F000E01146 /* ScrollableNavigationView.m */; };
 		992F238C1985BD6300320CAA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 992F238B1985BD6300320CAA /* Foundation.framework */; };
 		992F238E1985BD6300320CAA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 992F238D1985BD6300320CAA /* CoreGraphics.framework */; };
 		992F23901985BD6300320CAA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 992F238F1985BD6300320CAA /* UIKit.framework */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8C38482C1B71F8F000E01146 /* ScrollableNavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollableNavigationView.h; sourceTree = "<group>"; };
+		8C38482D1B71F8F000E01146 /* ScrollableNavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollableNavigationView.m; sourceTree = "<group>"; };
 		992F23881985BD6300320CAA /* RKSwipeBetweenViewControllers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RKSwipeBetweenViewControllers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		992F238B1985BD6300320CAA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		992F238D1985BD6300320CAA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -119,6 +122,8 @@
 				992F23C01985BDD500320CAA /* RKSwipeBetweenViewControllers.h */,
 				992F23C11985BDD500320CAA /* RKSwipeBetweenViewControllers.m */,
 				992F23921985BD6300320CAA /* Supporting Files */,
+				8C38482C1B71F8F000E01146 /* ScrollableNavigationView.h */,
+				8C38482D1B71F8F000E01146 /* ScrollableNavigationView.m */,
 			);
 			path = RKSwipeBetweenViewControllers;
 			sourceTree = "<group>";
@@ -255,6 +260,7 @@
 				992F23C21985BDD500320CAA /* RKSwipeBetweenViewControllers.m in Sources */,
 				992F239C1985BD6300320CAA /* AppDelegate.m in Sources */,
 				992F23981985BD6300320CAA /* main.m in Sources */,
+				8C38482E1B71F8F000E01146 /* ScrollableNavigationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
