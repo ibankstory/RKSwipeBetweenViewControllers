@@ -20,6 +20,7 @@
     UIPageViewController *pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     RKSwipeBetweenViewControllers *navigationController = [[RKSwipeBetweenViewControllers alloc]initWithRootViewController:pageController];
+    navigationController.navigationViewBackgroundColor = [UIColor blueColor];
     
     //%%% DEMO CONTROLLERS
     UIViewController *demo = [[UIViewController alloc]init];

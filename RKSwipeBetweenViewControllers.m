@@ -73,8 +73,9 @@ CGFloat NAVIGATION_VIEW_Y = 60;
     navigationView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,NAVIGATION_VIEW_Y,self.view.frame.size.width,44)];
     navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     if(!self.navigationViewBackgroundColor){
-        self.navigationViewBackgroundColor = [UIColor blueColor];
+        self.navigationViewBackgroundColor = [UIColor clearColor];
     }
+    
     navigationView.backgroundColor = self.navigationViewBackgroundColor;
     
     NSInteger numControllers = [viewControllerArray count];
