@@ -17,8 +17,8 @@ CGFloat HEIGHT = 30.0; //%%% height of the segment
 //%%% customizeable selector bar attributes (the black bar under the buttons)
 CGFloat BOUNCE_BUFFER = 10.0; //%%% adds bounce to the selection bar when you scroll
 CGFloat ANIMATION_SPEED = 0.2; //%%% the number of seconds it takes to complete the animation
-CGFloat SELECTOR_Y_BUFFER = 40.0; //%%% the y-value of the bar that shows what page you are on (0 is the top)
-CGFloat SELECTOR_HEIGHT = 4.0; //%%% thickness of the selector bar
+//CGFloat SELECTOR_Y_BUFFER = 40.0; //%%% the y-value of the bar that shows what page you are on (0 is the top)
+//CGFloat SELECTOR_HEIGHT = 2.0; //%%% thickness of the selector bar
 
 CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy offset.  I'm going to look for a better workaround in the future
 
@@ -39,6 +39,8 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 @synthesize pageController;
 @synthesize navigationView;
 @synthesize buttonText;
+@synthesize SELECTOR_HEIGHT;
+@synthesize SELECTOR_Y_BUFFER;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,6 +59,14 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     self.currentPageIndex = 0;
     self.isPageScrollingFlag = NO;
     self.hasAppearedFlag = NO;
+    
+    if (SELECTOR_HEIGHT == 0){
+        SELECTOR_HEIGHT = 2;
+    }
+    
+    if (SELECTOR_Y_BUFFER == 0) {
+        SELECTOR_Y_BUFFER = 100;
+    }
 }
 
 #pragma mark Customizables
@@ -155,7 +165,9 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 
 //%%% sets up the selection bar under the buttons on the navigation bar
 -(void)setupSelector {
-    selectionBar = [[UIView alloc]initWithFrame:CGRectMake( (navigationView.frame.size.width/2) - (BUTTON_WIDTH/2) ,NAVIGATION_VIEW_Y + self.navigationView.frame.size.height-SELECTOR_HEIGHT-2,BUTTON_WIDTH, SELECTOR_HEIGHT)];
+    
+    
+    selectionBar = [[UIView alloc]initWithFrame:CGRectMake( (navigationView.frame.size.width/2) - (BUTTON_WIDTH/2) ,SELECTOR_Y_BUFFER,BUTTON_WIDTH, SELECTOR_HEIGHT)];
     if (!self.selectionBarColor) {
         self.selectionBarColor = [UIColor whiteColor];
     }
@@ -165,7 +177,7 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     
 }
 - (void)updateSelectionBarFrame{
-    selectionBar.frame = CGRectMake((navigationView.frame.size.width/2) - (BUTTON_WIDTH/2) ,NAVIGATION_VIEW_Y + self.navigationView.frame.size.height-SELECTOR_HEIGHT-2,BUTTON_WIDTH, SELECTOR_HEIGHT);
+    selectionBar.frame = CGRectMake((navigationView.frame.size.width/2) - (BUTTON_WIDTH/2) ,SELECTOR_Y_BUFFER,BUTTON_WIDTH, SELECTOR_HEIGHT);
 }
 
 //generally, this shouldn't be changed unless you know what you're changing
