@@ -20,7 +20,7 @@
     UIPageViewController *pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     RKSwipeBetweenViewControllers *navigationController = [[RKSwipeBetweenViewControllers alloc]initWithRootViewController:pageController];
-    navigationController.navigationViewBackgroundColor = [UIColor blueColor];
+    navigationController.navigationViewBackgroundColor = [UIColor clearColor];
     
     //%%% DEMO CONTROLLERS
     UIViewController *demo = [[UIViewController alloc]init];
@@ -34,10 +34,23 @@
     demo2.view.backgroundColor = [UIColor blueColor];
     demo3.view.backgroundColor = [UIColor grayColor];
     demo4.view.backgroundColor = [UIColor orangeColor];
+    demo5.view.backgroundColor = [UIColor blueColor];
+    demo6.view.backgroundColor = [UIColor darkGrayColor];
+    demo7.view.backgroundColor = [UIColor grayColor];
+    
+
     [navigationController.viewControllerArray addObjectsFromArray:@[demo,demo2,demo3,demo4,demo5,demo6,demo7]];
     
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
+    
+    
+//    // Delay execution of my block for 10 seconds.
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//        [navigationController changeNavigationViewBackgroundColor:[UIColor blackColor] withAnimation:YES];
+//        [navigationController changeNavigationBarColor:[UIColor blackColor] withTranslucent:NO];
+//    });
+//    
     return YES;
 }
 

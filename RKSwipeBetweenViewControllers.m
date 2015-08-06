@@ -23,7 +23,7 @@ CGFloat SELECTOR_HEIGHT = 4.0; //%%% thickness of the selector bar
 CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy offset.  I'm going to look for a better workaround in the future
 
 CGFloat BUTTON_WIDTH = 80.0;
-CGFloat NAVIGATION_VIEW_Y = 60;
+CGFloat NAVIGATION_VIEW_Y = 64;
 @interface RKSwipeBetweenViewControllers ()
 
 @property (nonatomic) UIScrollView *pageScrollView;
@@ -92,6 +92,10 @@ CGFloat NAVIGATION_VIEW_Y = 60;
         self.normalButtonColor = [UIColor colorWithWhite:1 alpha:0.7];
     }
     
+    if (!self.buttonFont) {
+        self.buttonFont = [UIFont systemFontOfSize:14];
+    }
+    
     for (int i = 0; i<numControllers; i++) {
         UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake((BUTTON_WIDTH*i), Y_BUFFER, BUTTON_WIDTH, HEIGHT)];
         
@@ -102,6 +106,7 @@ CGFloat NAVIGATION_VIEW_Y = 60;
         [button addTarget:self action:@selector(tapSegmentButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
         [button setTitle:[buttonText objectAtIndex:i] forState:UIControlStateNormal]; //%%%buttontitle
+        [button.titleLabel setFont:self.buttonFont];
         
         if (i == 0) {
             [button setTitleColor:self.selectedButtonColor forState:UIControlStateNormal];
@@ -371,5 +376,26 @@ CGFloat NAVIGATION_VIEW_Y = 60;
 }
 
 
+#pragma mark - Custom
+- (void)changeNavigationViewBackgroundColor:(UIColor *)color withAnimation:(BOOL)animation
+{
+    self.navigationViewBackgroundColor = color;
+    
+    if (animation) {
+        [UIView animateWithDuration:0.5 animations:^(void){
+            self.navigationView.backgroundColor = self.navigationViewBackgroundColor;
+        }];
+        
+    }else{
+        self.navigationView.backgroundColor = self.navigationViewBackgroundColor;
+    }
+}
+
+- (void)changeNavigationBarColor:(UIColor *)color withTranslucent:(BOOL)translucent
+{
+    self.navigationBarColor = color;
+    self.navigationBar.barTintColor = self.navigationBarColor;
+    self.navigationBar.translucent = translucent;
+}
 
 @end

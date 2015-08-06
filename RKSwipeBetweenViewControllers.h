@@ -165,4 +165,11 @@
 @property (nonatomic, strong) UIColor *normalButtonColor;
 @property (nonatomic, strong) UIColor *navigationViewBackgroundColor;
 @property (nonatomic, strong) UIColor *selectionBarColor;
+@property (nonatomic, strong) UIFont *buttonFont;
+@property (nonatomic, strong) UIColor *navigationBarColor;
+
+- (void)changeNavigationViewBackgroundColor:(UIColor *)color withAnimation:(BOOL)animation;
+- (void)changeNavigationBarColor:(UIColor *)color withTranslucent:(BOOL)withTranslucent;
+
+
 @end
