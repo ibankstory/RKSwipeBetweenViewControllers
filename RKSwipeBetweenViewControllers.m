@@ -405,8 +405,14 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 
 - (void)changeNavigationBarColor:(UIColor *)color withTranslucent:(BOOL)translucent
 {
-    self.navigationBarColor = color;
-    self.navigationBar.barTintColor = self.navigationBarColor;
+    if (color == [UIColor clearColor]){
+        [self.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+        [self.navigationBar setShadowImage:[[UIImage alloc]init]];
+    }else{
+        self.navigationBarColor = color;
+        self.navigationBar.barTintColor = self.navigationBarColor;
+    }
+    
     self.navigationBar.translucent = translucent;
 }
 
