@@ -416,7 +416,7 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     self.navigationBar.translucent = translucent;
 }
 
-- (void)changeNavigationBarColor:(UIColor *)color withAlpha:(BOOL)alpha
+- (void)changeNavigationBarColor:(UIColor *)color withAlpha:(CGFloat)alpha
 {
     self.navigationBarColor = color;
     self.navigationBar.barTintColor = self.navigationBarColor;
