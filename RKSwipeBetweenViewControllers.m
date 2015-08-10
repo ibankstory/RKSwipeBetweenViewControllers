@@ -69,7 +69,7 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     }
     
     if (!self.navigationBarColor) {
-        self.navigationBarColor = [UIColor blueColor];
+        self.navigationBarColor = [UIColor clearColor];
     }
     
     self.navigationBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, NAVIGATION_VIEW_Y)];
@@ -424,6 +424,8 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     }
     
     self.navigationBar.translucent = translucent;
+    self.navigationBarBackgroundView.backgroundColor = self.navigationBarColor;
+    
 }
 - (void)changeNavigationBarColor:(UIColor *)color viewAlpha:(CGFloat)alpha
 {
@@ -432,7 +434,9 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 }
 - (void)changeNavigationBarBackgroundViewAlpha:(CGFloat)alpha
 {
-    self.navigationBarBackgroundView.alpha = alpha;
+    if (self.navigationBarBackgroundView) {
+        self.navigationBarBackgroundView.alpha = alpha;
+    }
 }
 
 @end
