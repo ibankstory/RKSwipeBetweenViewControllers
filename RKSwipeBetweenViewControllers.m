@@ -30,7 +30,7 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 @property (nonatomic) NSInteger currentPageIndex;
 @property (nonatomic) BOOL isPageScrollingFlag; //%%% prevents scrolling / segment tap crash
 @property (nonatomic) BOOL hasAppearedFlag; //%%% prevents reloading (maintains state)
-
+@property (nonatomic) UIView *navigationBarBackgroundView;
 @end
 
 @implementation RKSwipeBetweenViewControllers
@@ -67,6 +67,12 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     if (SELECTOR_Y_BUFFER == 0) {
         SELECTOR_Y_BUFFER = 100;
     }
+    
+    self.navigationBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, NAVIGATION_VIEW_Y)];
+    self.navigationBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.navigationBarBackgroundView.backgroundColor = self.navigationBarColor;
+    [self.view addSubview:self.navigationBarBackgroundView];
+    
 }
 
 #pragma mark Customizables
@@ -415,12 +421,14 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     
     self.navigationBar.translucent = translucent;
 }
-
-- (void)changeNavigationBarColor:(UIColor *)color withAlpha:(CGFloat)alpha
+- (void)changeNavigationBarColor:(UIColor *)color viewAlpha:(CGFloat)alpha
 {
-    self.navigationBarColor = color;
-    self.navigationBar.barTintColor = self.navigationBarColor;
-    self.navigationBar.alpha = alpha;
+    self.navigationBarBackgroundView.backgroundColor = color;
+    self.navigationBarBackgroundView.alpha = alpha;
+}
+- (void)changeNavigationBarBackgroundViewAlpha:(CGFloat)alpha
+{
+    self.navigationBarBackgroundView.alpha = alpha;
 }
 
 @end
