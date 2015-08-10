@@ -68,10 +68,14 @@ CGFloat NAVIGATION_VIEW_Y = 64;
         SELECTOR_Y_BUFFER = 100;
     }
     
+    if (!self.navigationBarColor) {
+        self.navigationBarColor = [UIColor blueColor];
+    }
+    
     self.navigationBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, NAVIGATION_VIEW_Y)];
     self.navigationBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.navigationBarBackgroundView.backgroundColor = self.navigationBarColor;
-    [self.view addSubview:self.navigationBarBackgroundView];
+    [self.view insertSubview:self.navigationBarBackgroundView belowSubview:self.navigationBar];
     
 }
 

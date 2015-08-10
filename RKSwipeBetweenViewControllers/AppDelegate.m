@@ -41,6 +41,7 @@
 
     [navigationController.viewControllerArray addObjectsFromArray:@[demo,demo2,demo3,demo4,demo5,demo6,demo7]];
     [navigationController changeNavigationBarColor:[UIColor clearColor] withTranslucent:YES];
+    
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
     
