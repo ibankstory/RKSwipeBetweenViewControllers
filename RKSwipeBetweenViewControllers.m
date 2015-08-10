@@ -30,7 +30,7 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 @property (nonatomic) NSInteger currentPageIndex;
 @property (nonatomic) BOOL isPageScrollingFlag; //%%% prevents scrolling / segment tap crash
 @property (nonatomic) BOOL hasAppearedFlag; //%%% prevents reloading (maintains state)
-@property (nonatomic) UIView *navigationBarBackgroundView;
+
 @end
 
 @implementation RKSwipeBetweenViewControllers

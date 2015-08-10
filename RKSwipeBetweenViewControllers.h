@@ -167,6 +167,7 @@
 @property (nonatomic, strong) UIColor *selectionBarColor;
 @property (nonatomic, strong) UIFont *buttonFont;
 @property (nonatomic, strong) UIColor *navigationBarColor;
+@property (nonatomic, strong) UIView *navigationBarBackgroundView;
 @property (nonatomic) CGFloat SELECTOR_HEIGHT;
 @property (nonatomic) CGFloat SELECTOR_Y_BUFFER;
 - (void)changeNavigationViewBackgroundColor:(UIColor *)color withAnimation:(BOOL)animation;
