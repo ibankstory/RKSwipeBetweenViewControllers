@@ -424,7 +424,6 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     }
     
     self.navigationBar.translucent = translucent;
-    self.navigationBarBackgroundView.backgroundColor = self.navigationBarColor;
     
 }
 - (void)changeNavigationBarColor:(UIColor *)color viewAlpha:(CGFloat)alpha
