@@ -171,6 +171,7 @@
 @property (nonatomic) CGFloat SELECTOR_Y_BUFFER;
 - (void)changeNavigationViewBackgroundColor:(UIColor *)color withAnimation:(BOOL)animation;
 - (void)changeNavigationBarColor:(UIColor *)color withTranslucent:(BOOL)withTranslucent;
+- (void)changeNavigationBarColor:(UIColor *)color withAlpha:(BOOL)alpha;
 
 
 @end
