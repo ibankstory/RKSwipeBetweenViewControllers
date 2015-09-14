@@ -25,7 +25,9 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
 CGFloat BUTTON_WIDTH = 80.0;
 CGFloat NAVIGATION_VIEW_Y = 64;
 @interface RKSwipeBetweenViewControllers ()
-
+{
+    NSMutableArray *arrayOfNavButtons;
+}
 @property (nonatomic) UIScrollView *pageScrollView;
 @property (nonatomic) NSInteger currentPageIndex;
 @property (nonatomic) BOOL isPageScrollingFlag; //%%% prevents scrolling / segment tap crash
@@ -101,7 +103,7 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     NSInteger numControllers = [viewControllerArray count];
     
     if (!buttonText) {
-         buttonText = [[NSArray alloc]initWithObjects: @"X",@"X",@"X",@"X",@"X",@"X",@"X",@"X",nil]; //%%%buttontitle
+         buttonText = [[NSArray alloc]initWithObjects: @"Company",@"Brand",@"Promotion",@"Hot",@"Life-Style",@"Super",@"X",@"X",nil]; //%%%buttontitle
     }
     
     if (!self.selectedButtonColor) {
@@ -133,9 +135,47 @@ CGFloat NAVIGATION_VIEW_Y = 64;
         }else{
             [button setTitleColor:self.normalButtonColor forState:UIControlStateNormal];
         }
+        [button setContentEdgeInsets:UIEdgeInsetsMake(4, 10, 0, 10)];
+        [button sizeToFit];
+//        [button setBackgroundColor:[UIColor brownColor]];
     }
     
-    navigationView.contentSize = CGSizeMake(numControllers*BUTTON_WIDTH, navigationView.frame.size.height);
+    arrayOfNavButtons = [NSMutableArray new];
+    for (UIButton *button in navigationView.subviews) {
+        [arrayOfNavButtons addObject:button];
+    }
+    
+    NSInteger previous_button_index = 0;
+    for (int i = 0; i < arrayOfNavButtons.count; i++) {
+        
+        if (i <= 0){
+            previous_button_index = 0;
+        }else{
+            previous_button_index = i-1;
+        }
+        
+        UIButton *previous_button = (UIButton *)arrayOfNavButtons[previous_button_index];
+        UIButton *current_button = (UIButton *)arrayOfNavButtons[i];
+        
+        CGFloat x = 0;
+        
+        if (current_button == previous_button){
+            CGRect frame = current_button.frame;
+            frame.origin.x = x;
+            current_button.frame = frame;
+        }else{
+            
+            x = CGRectGetMinX(previous_button.frame) + CGRectGetWidth(previous_button.frame);
+            CGRect frame = current_button.frame;
+            frame.origin.x = x;
+            current_button.frame = frame;
+        }
+    }
+    
+    UIButton *lastButton = arrayOfNavButtons.lastObject;
+    CGFloat contentSizeWidth = CGRectGetMinX(lastButton.frame) + CGRectGetWidth(lastButton.frame);
+
+    navigationView.contentSize = CGSizeMake(contentSizeWidth, navigationView.frame.size.height);
     navigationView.showsHorizontalScrollIndicator = NO;
     navigationView.scrollEnabled = NO;
     [self.view addSubview:navigationView];
@@ -176,8 +216,9 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 //%%% sets up the selection bar under the buttons on the navigation bar
 -(void)setupSelector {
     
-    
-    selectionBar = [[UIView alloc]initWithFrame:CGRectMake( (navigationView.frame.size.width/2) - (BUTTON_WIDTH/2) ,SELECTOR_Y_BUFFER,BUTTON_WIDTH, SELECTOR_HEIGHT)];
+    UIButton *currentButton = arrayOfNavButtons[self.currentPageIndex];
+    CGFloat button_witdh = CGRectGetWidth(currentButton.frame);
+    selectionBar = [[UIView alloc]initWithFrame:CGRectMake( (navigationView.frame.size.width/2) - (button_witdh/2) ,SELECTOR_Y_BUFFER,button_witdh, SELECTOR_HEIGHT)];
     if (!self.selectionBarColor) {
         self.selectionBarColor = [UIColor whiteColor];
     }
@@ -187,7 +228,12 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     
 }
 - (void)updateSelectionBarFrame{
-    selectionBar.frame = CGRectMake((navigationView.frame.size.width/2) - (BUTTON_WIDTH/2) ,SELECTOR_Y_BUFFER,BUTTON_WIDTH, SELECTOR_HEIGHT);
+    
+    UIButton *currentButton = arrayOfNavButtons[self.currentPageIndex];
+    
+    CGFloat button_witdh = CGRectGetWidth(currentButton.frame);
+
+    selectionBar.frame = CGRectMake((navigationView.frame.size.width/2) - (button_witdh/2) ,SELECTOR_Y_BUFFER,button_witdh, SELECTOR_HEIGHT);
 }
 
 //generally, this shouldn't be changed unless you know what you're changing
@@ -260,7 +306,9 @@ CGFloat NAVIGATION_VIEW_Y = 64;
                     //then it updates the page that it's currently on
                     if (complete) {
                         [weakSelf updateCurrentPageIndex:i];
-
+                        [UIView animateWithDuration:0.3 animations:^{
+                            [weakSelf updateSelectionBarFrame];
+                        }];
                     }
                 }];
             }
@@ -272,11 +320,16 @@ CGFloat NAVIGATION_VIEW_Y = 64;
                 [pageController setViewControllers:@[[viewControllerArray objectAtIndex:i]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:^(BOOL complete){
                     if (complete) {
                         [weakSelf updateCurrentPageIndex:i];
+                        [UIView animateWithDuration:0.3 animations:^{
+                            [weakSelf updateSelectionBarFrame];
+                        }];
                     }
                 }];
             }
         }
     }
+    
+    
     
     
 }
@@ -312,29 +365,11 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 }
 
 - (void)updateNavigationViewOffset:(UIScrollView *)scrollView {
-    
-    CGFloat view_width = navigationView.frame.size.width;
-    
-    CGFloat center = ((view_width - scrollView.contentOffset.x)*2) / [viewControllerArray count];
 
-    NSInteger xCoor = self.currentPageIndex * BUTTON_WIDTH - (navigationView.frame.size.width/2 - BUTTON_WIDTH/2);
-    
-    NSInteger current_xCoor = (xCoor - center);
-    
-    NSInteger next_xCoor = xCoor + BUTTON_WIDTH;
-    
-    NSInteger previous_xCoor = next_xCoor - BUTTON_WIDTH*2;
-    
-    
-    if (current_xCoor > next_xCoor) {
-        current_xCoor = next_xCoor;
-    }
-    
-    if (current_xCoor < previous_xCoor) {
-        current_xCoor = previous_xCoor;
-    }
-    
-    navigationView.contentOffset = CGPointMake(current_xCoor, 0);
+    UIButton *current_button = arrayOfNavButtons[self.currentPageIndex];
+
+    CGFloat offset_x = -((CGRectGetWidth(navigationView.frame)/2) - (CGRectGetMinX(current_button.frame) + (CGRectGetWidth(current_button.frame)/2)));
+    navigationView.contentOffset = CGPointMake(offset_x, 0);
     
 }
 
@@ -395,6 +430,10 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     [self updateSelectedButton:self.currentPageIndex];
     
     selectionBar.alpha = 1.0;
+    [UIView animateWithDuration:0.3 animations:^{
+        [self updateSelectionBarFrame];
+    }];
+    
 }
 
 
