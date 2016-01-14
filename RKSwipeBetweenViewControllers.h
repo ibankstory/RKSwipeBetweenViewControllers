@@ -174,6 +174,6 @@
 - (void)changeNavigationBarColor:(UIColor *)color withTranslucent:(BOOL)withTranslucent;
 - (void)changeNavigationBarColor:(UIColor *)color viewAlpha:(CGFloat)alpha;
 - (void)changeNavigationBarBackgroundViewAlpha:(CGFloat)alpha;
-
+- (void)reloadSegmentButtons;
 
 @end

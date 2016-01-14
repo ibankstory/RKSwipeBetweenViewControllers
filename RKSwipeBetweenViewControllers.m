@@ -477,4 +477,7 @@ CGFloat NAVIGATION_VIEW_Y = 64;
     }
 }
 
+- (void)reloadSegmentButtons{
+    [self setupSegmentButtons];
+}
 @end
