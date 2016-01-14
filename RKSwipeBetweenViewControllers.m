@@ -92,6 +92,11 @@ CGFloat NAVIGATION_VIEW_Y = 64;
 //%%% sets up the tabs using a loop.  You can take apart the loop to customize individual buttons, but remember to tag the buttons.  (button.tag=0 and the second button.tag=1, etc)
 -(void)setupSegmentButtons {
     
+    if (navigationView) {
+        [navigationView removeFromSuperview];
+        navigationView = nil;
+    }
+    
     navigationView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,NAVIGATION_VIEW_Y,self.view.frame.size.width,44)];
     navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     if(!self.navigationViewBackgroundColor){
